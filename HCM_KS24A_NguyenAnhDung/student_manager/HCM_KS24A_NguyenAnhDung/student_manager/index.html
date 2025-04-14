@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Sinh Viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/f4a6701e7e.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+    <h1>Quản Lý Sinh Viên</h1>
+
+    <form onsubmit="validateForm(event)" class="box">
+        <div class="mb-3">
+            <input type="text" class="form-control" id="name" placeholder="Họ và tên">
+            <p id="nameErr" style="display: none;">Họ tên không được để trống</p>
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="id" placeholder="Mã số sinh viên">
+            <p id="idErr" style="display: none;">Mã số sinh viên không được để trống</p>
+        </div>
+        <div class="mb-3">
+            <input type="email" class="form-control" id="email" placeholder="Email">
+            <p id="emailErr" style="display: none;">Email không hợp lệ</p>
+        </div>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="class" placeholder="Lớp">
+            <p id="classErr" style="display: none;">Lớp không được để trống</p>
+        </div>
+        <button type="submit" class="btn btn-primary">Thêm sinh viên</button>
+    </form>
+
+    <div class="box2">
+        <input type="text" class="form-control" id="find" placeholder="Tìm kiếm theo tên..."
+            onkeydown="findStudent(event)">
+        <p id="findErr" style="display: none;">Không tìm thấy sinh viên</p>
+
+        <table>
+            <thead>
+                <th>#</th>
+                <th>Họ tên</th>
+                <th>MSSV</th>
+                <th>Email</th>
+                <th>Lớp</th>
+                <th>Hành động</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa thông tin</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-control-edit" onsubmit="updateStudent(event)">
+                        <input type="hidden" name="index" id="index">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="name" placeholder="Họ và tên">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="id" placeholder="Mã số sinh viên">
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" id="email" placeholder="Email">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="class" placeholder="Lớp">
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+        crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
