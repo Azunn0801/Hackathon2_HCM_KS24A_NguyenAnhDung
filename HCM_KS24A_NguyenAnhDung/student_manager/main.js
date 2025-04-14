@@ -32,7 +32,6 @@ function validateForm(event) {
     if (isDuplicate) {
         document.getElementById('idErr').style.display = "block"
         document.getElementById('idErr').innerText = "Mã số sinh viên không được trùng nhau"
-        isValid = false
     }
 
     const confirmForm = checkForm.every(({ error }) => error.style.display === "none")
@@ -56,6 +55,7 @@ function addStudent(checkForm) {
 
 function renderData() {
     let dataHTML = ``
+
     for (let i = 0; i < studentList.length; i++) {
         dataHTML += `
         <tr>
@@ -82,46 +82,80 @@ function renderData() {
 
 function findStudent(event) {
     if (event.key === 'Enter') {
+        event.preventDefault()
         const searchValue = event.target.value.trim().toLowerCase()
-        const filteredStudents = studentList.filter(student => student.name.toLowerCase().includes(searchValue))
+        const filteredStudents = studentList.filter(student =>
+            student.name.toLowerCase().includes(searchValue)
+        )
+
         renderFilteredData(filteredStudents)
+
         if (filteredStudents.length === 0) {
             findStatEl.style.display = "block"
-        }
-        else {
+        } else {
             findStatEl.style.display = "none"
         }
     }
 }
 
-function deleteStudent(index) {
-    if (window.confirm("Bạn có chắc chắn muốn xóa không?")) {
-         studentList.splice(index, 1)
-         renderData()
-         alert("Xoá thành công")
-     }
- }
- 
+function renderFilteredData(filteredList) {
+    let dataHTML = ``
 
-function loadEditData(index) {
-    formEditEL.name.value = studentList[index].name
-    formEditEL.id.value = studentList[index].id
-    formEditEL.email.value = studentList[index].email
-    formEditEL.class.value = studentList[index].class
+    for (let i = 0; i < filteredList.length; i++) {
+        dataHTML += `
+        <tr>
+            <td>${i + 1}</td>
+            <td>${filteredList[i].name}</td>
+            <td>${filteredList[i].id}</td>
+            <td>${filteredList[i].email}</td>
+            <td>${filteredList[i].class}</td>
+            <td>
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                    data-bs-target="#editModal" onclick="loadEditData(${i})">
+                    Sửa
+                </button>
+                <button type="button" class="btn btn-danger" onclick="deleteStudent(${i})">
+                    Xoá
+                </button>
+            </td>
+        </tr>
+        `
+    }
+
+    dataEl.innerHTML = dataHTML
 }
 
-function updateStudent(event)   {
+
+function deleteStudent(index) {
+    if (window.confirm("Bạn có chắc chắn muốn xóa không?")) {
+        studentList.splice(index, 1)
+        renderData()
+        alert("Xoá thành công")
+    }
+}
+
+function loadEditData(index) {
+    document.getElementById('edit-index').value = index
+    document.getElementById('edit-name').value = studentList[index].name
+    document.getElementById('edit-id').value = studentList[index].id
+    document.getElementById('edit-email').value = studentList[index].email
+    document.getElementById('edit-class').value = studentList[index].class
+}
+
+
+function updateStudent(event) {
     event.preventDefault()
-    const index = formEditEL.index.value
+
+    const index = document.getElementById('edit-index').value
     const updatedStudent = {
-        name: event.target.name.value.trim(),
-        id: event.target.id.value.trim(),
-        email: event.target.email.value.trim(),
-        class: event.target.class.value.trim()
+        name: document.getElementById('edit-name').value.trim(),
+        id: document.getElementById('edit-id').value.trim(),
+        email: document.getElementById('edit-email').value.trim(),
+        class: document.getElementById('edit-class').value.trim()
     }
 
     studentList[index] = updatedStudent
-    console.log(studentList)
     renderData()
-
+    alert("Cập nhật thành công")
 }
+
